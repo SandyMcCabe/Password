@@ -1,4 +1,4 @@
-// Assignment code here
+//global variables
 var password;
 var passwordLength;
 
@@ -8,70 +8,63 @@ var numbers = "1234567890";
 var special = " !#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 var passwordChoices = ""
 
+//function to clear variables if the game is ran more than once
 function resetPassword() {
   password = ""
-  passwordLength = "";
+  passwordLength = 0;
   passwordChoices = "";
 }
 
-function passwordSelectors() {
-  resetPassword();
+//gather password ingrediants
+function passwordContents () {
+  if (window.confirm("Would you like your password to contain upper case letters?")) {
+    passwordChoices += upper;
+  };
+  if (window.confirm("Would you like your password to contain lower case letters?")) {
+    passwordChoices += lower;
+  };
+  if (window.confirm("Would you like your password to contain numbers?")) {
+    passwordChoices += numbers;
+  };
+  if (window.confirm("Would you like your password to contain special characters?")) {
+    passwordChoices += special;
+  };
+}
 
-  passwordLength = window.prompt('How long would you like your password to be? Please choose a number between 8 and 128.');
-  console.log(passwordLength);
+//Call the 2 functions to figure out what we need to generate our password
+function passwordSelectors() {
+  resetPassword(); //in case this isn't the first time running our generator
   
   while (passwordLength < 8 || passwordLength > 128) {
-    let passwordLength = window.prompt('Please enter a password length between 8-128 digits.');
+    passwordLength = window.prompt('How long would you like your password to be? Please choose a number between 8 and 128.');
     console.log(passwordLength);
   };
 
-  // while (passwordChoices.length < 1 ) {
+  while ( !passwordChoices ) {
+    passwordContents();
+  }
  
-  if (window.confirm("Would you like your password to contain upper case letters?")) {
-    passwordChoices += upper;
-    console.log (passwordChoices);
-  };
-  if (window.confirm("Would you like your password to contain lower case letters?")) 
-  {
-    passwordChoices += lower;
-    console.log (passwordChoices);
-  }
-  if (window.confirm("Would you like your password to contain numbers?")) 
-  {
-    passwordChoices += numbers;
-    console.log (passwordChoices);
-  }
-  if (window.confirm("Would you like your password to contain special characters?")) 
-  {
-    passwordChoices += special;
-    console.log (passwordChoices);
-  }
-// }
 return;
 }
 
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 
+//function to make the password
 function generatePassword() {
  passwordSelectors()
- console.log ("returned back to generate password")
 
   for (let i = 0; i < passwordLength; i++) {
-    console.log("into the for loop")
     password += passwordChoices[Math.floor(Math.random() * passwordChoices.length)];
     console.log(password);
   }
     return password;
-  
 }
 
 // Write password to the #password input
 function writePassword() {
   password = generatePassword();
-  console.log("am I getting here??");
   var passwordText = document.querySelector("#password");
-
   passwordText.value = password;
 
 }
